@@ -18,7 +18,10 @@ function App() {
   useEffect(() => {
     async function loadCurrencies() {
       try {
-        const response = await api.get('USD-BRL,EUR-BRL,ARS-BRL,ETH-BRL,LTC-BRL,BTC-BRL,CNY-BRL,JPY-BRL,USDT-BRL,CAD-BRL,AUD-BRL');
+
+        const exchangeConfig = 'USD-BRL,EUR-BRL,ARS-BRL,ETH-BRL,LTC-BRL,BTC-BRL,CNY-BRL,JPY-BRL,USDT-BRL,CAD-BRL,AUD-BRL';
+
+        const response = await api.get(exchangeConfig);
 
         const dolar = response.data["USD"];
         dolar.image = usa_flag;
@@ -89,8 +92,8 @@ function App() {
                   <div className="card-body">
                     <p className="card-text">
                       {currency.name}<br/>
-                      {`Mais alto: R$ ${currency.high}`}<br/>
-                      {`Mais baixo: R$ ${currency.low}`}<br/>
+                      {`Mais alto: R$ ${ new Intl.NumberFormat('pt-BR').format(currency.high)} `}<br/>
+                      {`Mais Baixo: R$ ${ new Intl.NumberFormat('pt-BR').format(currency.low)} `}<br/>
                       {`Última variação: ${currency.pctChange}%`}
                     </p>
                   </div>
