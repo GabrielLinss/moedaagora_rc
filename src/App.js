@@ -10,6 +10,10 @@ import eur_flag from './assets/eur_flag.png';
 import jap_flag from './assets/jap_flag.jpg';
 import ltc_image from './assets/ltc_image.jpg';
 import usa_flag from './assets/usa_flag.jpg';
+import u_king_flag from './assets/un_king.jpg';
+import suica_flag from './assets/suica.jpg';
+import israel_flag from './assets/israel.jpg';
+import ripple_flag from './assets/ripple.jpg';
 import api from './services/api';
 
 function App() {
@@ -19,9 +23,11 @@ function App() {
     async function loadCurrencies() {
       try {
 
-        const exchangeConfig = 'USD-BRL,EUR-BRL,ARS-BRL,ETH-BRL,LTC-BRL,BTC-BRL,CNY-BRL,JPY-BRL,USDT-BRL,CAD-BRL,AUD-BRL';
+        const exchangeConfig = 'USD-BRL,EUR-BRL,ARS-BRL,ETH-BRL,LTC-BRL,BTC-BRL,CNY-BRL,JPY-BRL,USDT-BRL,CAD-BRL,AUD-BRL,GBP-BRL,CHF-BRL,ILS-BRL,XRP-BRL';
 
         const response = await api.get(exchangeConfig);
+
+        console.log(response.data);
 
         const dolar = response.data["USD"];
         dolar.image = usa_flag;
@@ -56,7 +62,19 @@ function App() {
         const iene = response.data["JPY"];
         iene.image = jap_flag;
 
-        setCurrencies([ dolar, dolarT, dolarC, dolarA, euro, peso, ethereum, litecoin, bitcoin, yuan, iene ]);
+        const libraEsterlina = response.data["GBP"];
+        libraEsterlina.image = u_king_flag;
+
+        const francoSuico = response.data["CHF"];
+        francoSuico.image = suica_flag;
+
+        const novoShekel = response.data["ILS"];
+        novoShekel.image = israel_flag;
+
+        const ripple = response.data["XRP"];
+        ripple.image = ripple_flag;
+
+        setCurrencies([ dolar, dolarT, dolarC, dolarA, euro, peso, ethereum, litecoin, bitcoin, yuan, iene, libraEsterlina, francoSuico, novoShekel, ripple ]);
       } catch (error) {
         alert('Erro ao carregar cotações');
       }
@@ -91,6 +109,7 @@ function App() {
                     alt=""/>
                   <div className="card-body">
                     <p className="card-text">
+                      Código: {currency.code}<br/>
                       {currency.name}<br/>
                       {`Mais alto: R$ ${ new Intl.NumberFormat('pt-BR').format(currency.high)} `}<br/>
                       {`Mais Baixo: R$ ${ new Intl.NumberFormat('pt-BR').format(currency.low)} `}<br/>
