@@ -15,6 +15,8 @@ import suica_flag from './assets/suica.jpg';
 import israel_flag from './assets/israel.jpg';
 import ripple_flag from './assets/ripple.jpg';
 import api from './services/api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [currencies, setCurrencies] = useState([]);
@@ -26,8 +28,6 @@ function App() {
         const exchangeConfig = 'USD-BRL,EUR-BRL,ARS-BRL,ETH-BRL,LTC-BRL,BTC-BRL,CNY-BRL,JPY-BRL,USDT-BRL,CAD-BRL,AUD-BRL,GBP-BRL,CHF-BRL,ILS-BRL,XRP-BRL';
 
         const response = await api.get(exchangeConfig);
-
-        console.log(response.data);
 
         const dolar = response.data["USD"];
         dolar.image = usa_flag;
@@ -74,9 +74,9 @@ function App() {
         const ripple = response.data["XRP"];
         ripple.image = ripple_flag;
 
-        setCurrencies([ dolar, dolarT, dolarC, dolarA, euro, peso, ethereum, litecoin, bitcoin, yuan, iene, libraEsterlina, francoSuico, novoShekel, ripple ]);
+        setCurrencies([dolar, dolarT, dolarC, dolarA, euro, peso, ethereum, litecoin, bitcoin, yuan, iene, libraEsterlina, francoSuico, novoShekel, ripple]);
       } catch (error) {
-        alert('Erro ao carregar cotações');
+        toast.error('Erro ao carregar cotações')
       }
     }
 
@@ -102,19 +102,19 @@ function App() {
             {currencies.map(currency => (
               <div key={currency.name} className="col-lg-4 col-md-4 col-xs-12 col-sm-6 col-xl-3 mb-3">
                 <div className="card" style={{ width: '20rem' }}>
-                  <img 
-                    src={currency.image} 
-                    className="card-img-top" 
+                  <img
+                    src={currency.image}
+                    className="card-img-top"
                     height="150"
-                    alt=""/>
+                    alt="" />
                   <div className="card-body">
-                    <p className="card-text">
-                      Código: {currency.code}<br/>
-                      {currency.name}<br/>
-                      {`Mais alto: R$ ${ new Intl.NumberFormat('pt-BR').format(currency.high)} `}<br/>
-                      {`Mais Baixo: R$ ${ new Intl.NumberFormat('pt-BR').format(currency.low)} `}<br/>
-                      {`Última variação: ${currency.pctChange}%`}
-                    </p>
+                  <p className="card-text">Código: {currency.code}</p>
+                  <p className="card-text">{currency.name}</p>
+                  <p className="card-text">Mais alto: R$ {new Intl.NumberFormat('pt-BR').format(currency.high)}</p>
+                  <p className="card-text">Mais Baixo: R$ {new Intl.NumberFormat('pt-BR').format(currency.low)}</p>
+                  {currency.pctChange > 0 && <p className="card-text text-success">Última variação: {currency.pctChange}%</p>}
+                  {currency.pctChange === '0' && <p className="card-text">Última variação: {currency.pctChange}%</p>}
+                  {currency.pctChange < 0 && <p className="card-text text-danger">Última variação: {currency.pctChange}%</p>}
                   </div>
                 </div>
               </div>
@@ -139,6 +139,8 @@ function App() {
           </div>
         </div>
       </footer>
+
+      <ToastContainer />
     </>
   );
 }
