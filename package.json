@@ -14,11 +14,8 @@
     "react-scripts": "3.4.1",
     "react-toastify": "^7.0.3"
   },
-  "devDependencies": {
-    "electron": "^9.4.0"
-  },
+  "devDependencies": {},
   "scripts": {
-    "electron": "electron .",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
